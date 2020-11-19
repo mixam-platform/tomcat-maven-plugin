@@ -14,7 +14,9 @@ jobs:
           java-version: 11
       - name: Package
         run: mvn clean package -DskipTests
+      - name: Set version
+        run: mvn -B versions:set -DnewVersion=3.0-SNAPSHOT-${GITHUB_REF##*/}
       - name: Publish package
-        run: mvn -B deploy:deploy-file -Durl=https://maven.pkg.github.com/mixam-platform/tomcat-maven-plugin -DrepositoryId=github -Dfile=tomcat7-maven-plugin/target/tomcat7-maven-plugin-3.0-SNAPSHOT.jar -DgroupId=com.mixam.maven -DartifactId=tomcat7-maven-plugin -Dversion=3.0-SNAPSHOT-${GITHUB_REF##*/} -DgeneratePom=true
+        run: mvn -B deploy:deploy-file -Durl=https://maven.pkg.github.com/mixam-platform/packages -DrepositoryId=github -Dfile=tomcat7-maven-plugin/target/tomcat7-maven-plugin-3.0-SNAPSHOT.jar -DgroupId=org.apache.tomcat.maven -DartifactId=tomcat7-maven-plugin -Dversion=3.0-SNAPSHOT-${GITHUB_REF##*/} -DgeneratePom=true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PACKAGES_ACCESS_TOKEN }}
